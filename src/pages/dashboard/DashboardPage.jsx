@@ -1,8 +1,27 @@
 import { useAuth } from '../../hooks/auth/useAuth';
+import { useAttendance } from '../../hooks/attendance/useAttendance';
+import { useEmployees } from '../../hooks/employees/useEmployees';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
   const { user } = useAuth();
+  const { checkIn, checkOut, isCheckingIn, isCheckingOut } = useAttendance();
+  const { employees } = useEmployees();
+
+  // Encontrar el empleado actual en la lista para obtener su asistencia
+  const currentEmployee = employees?.find((emp) => emp.id === user?.id);
+  const canRegisterAttendance = ['admin', 'cashier', 'waiter', 'cook'].includes(user?.role);
+  const hasCheckedIn = currentEmployee?.today_attendance?.check_in;
+  const hasCheckedOut = currentEmployee?.today_attendance?.check_out;
+
+  const formatTime = (dateString) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
 
   return (
     <div className="page-container">
@@ -12,9 +31,59 @@ const DashboardPage = () => {
 
       <div className="dashboard-content">
         <div className="welcome-card">
-          <h2>Bienvenido, {user?.full_name}!</h2>
-          <p>Negocio: {user?.business_name || 'Negocio'}</p>
-          <p>Rol: {user?.role}</p>
+          <div className="welcome-card-content">
+            <h2>Bienvenido, {user?.full_name}!</h2>
+            <p>Negocio: {user?.business_name || 'Negocio'}</p>
+            <p>Rol: {user?.role}</p>
+
+            {/* Botón de asistencia - solo para roles que no sean owner */}
+            {canRegisterAttendance && (
+              <div className="attendance-quick-action">
+                {hasCheckedIn && hasCheckedOut ? (
+                  <div className="attendance-status-complete">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div className="attendance-status-text">
+                      <span className="status-title">Asistencia completa</span>
+                      <span className="status-time">
+                        Entrada: {formatTime(currentEmployee?.today_attendance?.check_in)} • Salida: {formatTime(currentEmployee?.today_attendance?.check_out)}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {hasCheckedIn ? (
+                      <div className="attendance-status-info">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>Entrada registrada a las {formatTime(currentEmployee?.today_attendance?.check_in)}</span>
+                      </div>
+                    ) : null}
+                    <button
+                      className={`btn-dashboard-attendance ${hasCheckedIn ? 'btn-checkout' : 'btn-checkin'}`}
+                      onClick={hasCheckedIn ? checkOut : checkIn}
+                      disabled={isCheckingIn || isCheckingOut}
+                    >
+                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        {hasCheckedIn ? (
+                          <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        ) : (
+                          <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        )}
+                      </svg>
+                      {isCheckingIn || isCheckingOut
+                        ? 'Registrando...'
+                        : hasCheckedIn
+                        ? 'Registrar Salida'
+                        : 'Registrar Entrada'}
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="stats-grid">

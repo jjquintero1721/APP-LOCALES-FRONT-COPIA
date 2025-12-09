@@ -1,6 +1,11 @@
 import './EmployeeModal.css';
+import { useAttendance } from '../../hooks/attendance/useAttendance';
+import useAuthStore from '../../store/authStore';
 
 const EmployeeDetailsModal = ({ isOpen, onClose, employee }) => {
+  const { user } = useAuthStore();
+  const { checkIn, checkOut, isCheckingIn, isCheckingOut } = useAttendance();
+
   if (!isOpen || !employee) return null;
 
   const roleLabels = {
@@ -22,6 +27,23 @@ const EmployeeDetailsModal = ({ isOpen, onClose, employee }) => {
       minute: '2-digit',
     });
   };
+
+  const formatTime = (dateString) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  // Verificar si el usuario actual puede registrar asistencia para este empleado
+  const canRegisterAttendance =
+    user?.id === employee.id &&
+    ['admin', 'cashier', 'waiter', 'cook'].includes(employee.role);
+
+  const hasCheckedIn = employee.today_attendance?.check_in;
+  const hasCheckedOut = employee.today_attendance?.check_out;
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -81,6 +103,75 @@ const EmployeeDetailsModal = ({ isOpen, onClose, employee }) => {
               <span className="detail-value">{formatDate(employee.created_at)}</span>
             </div>
           </div>
+
+          {/* Sección de asistencia - solo para roles que pueden registrar */}
+          {['admin', 'cashier', 'waiter', 'cook'].includes(employee.role) && (
+            <div className="attendance-section">
+              <h3 className="attendance-title">Asistencia de Hoy</h3>
+              <div className="attendance-grid">
+                <div className="attendance-item">
+                  <span className="attendance-label">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    Entrada
+                  </span>
+                  <span className={`attendance-value ${hasCheckedIn ? 'registered' : 'not-registered'}`}>
+                    {hasCheckedIn ? formatTime(employee.today_attendance.check_in) : 'No registrada'}
+                  </span>
+                </div>
+                <div className="attendance-item">
+                  <span className="attendance-label">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Salida
+                  </span>
+                  <span className={`attendance-value ${hasCheckedOut ? 'registered' : 'not-registered'}`}>
+                    {hasCheckedOut ? formatTime(employee.today_attendance.check_out) : 'No registrada'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Botones de registro - solo si está viendo sus propios detalles */}
+              {canRegisterAttendance && (
+                <div className="attendance-actions">
+                  {!hasCheckedIn && (
+                    <button
+                      className="btn-attendance btn-check-in"
+                      onClick={checkIn}
+                      disabled={isCheckingIn}
+                    >
+                      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                      </svg>
+                      {isCheckingIn ? 'Registrando...' : 'Registrar Entrada'}
+                    </button>
+                  )}
+                  {hasCheckedIn && !hasCheckedOut && (
+                    <button
+                      className="btn-attendance btn-check-out"
+                      onClick={checkOut}
+                      disabled={isCheckingOut}
+                    >
+                      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      {isCheckingOut ? 'Registrando...' : 'Registrar Salida'}
+                    </button>
+                  )}
+                  {hasCheckedIn && hasCheckedOut && (
+                    <div className="attendance-complete">
+                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>Asistencia completa para hoy</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="modal-footer">
