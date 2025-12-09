@@ -13,7 +13,7 @@ const DashboardPage = () => {
       <div className="dashboard-content">
         <div className="welcome-card">
           <h2>Bienvenido, {user?.full_name}!</h2>
-          <p>Negocio ID: {user?.business_id}</p>
+          <p>Negocio: {user?.business_name || 'Negocio'}</p>
           <p>Rol: {user?.role}</p>
         </div>
 

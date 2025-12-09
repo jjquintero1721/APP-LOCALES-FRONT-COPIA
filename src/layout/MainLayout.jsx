@@ -32,8 +32,8 @@ const MainLayout = () => {
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <h2 className="sidebar-title">Multi-Tenant</h2>
-          <p className="sidebar-subtitle">Business #{user?.business_id}</p>
+          <h2 className="sidebar-title">App de Gestión</h2>
+          <p className="sidebar-subtitle">{user?.business_name || 'Negocio'}</p>
         </div>
 
         <nav className="sidebar-nav">
