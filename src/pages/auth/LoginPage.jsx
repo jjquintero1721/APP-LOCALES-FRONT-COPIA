@@ -1,7 +1,7 @@
-import LoginForm from '../../components/auth/LoginForm';
+import AuthCard from '../../components/auth/AuthCard';
 
 const LoginPage = () => {
-  return <LoginForm />;
+  return <AuthCard />;
 };
 
 export default LoginPage;

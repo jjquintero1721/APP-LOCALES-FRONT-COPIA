@@ -1,7 +1,7 @@
-import RegisterForm from '../../components/auth/RegisterForm';
+import AuthCard from '../../components/auth/AuthCard';
 
 const RegisterPage = () => {
-  return <RegisterForm />;
+  return <AuthCard />;
 };
 
 export default RegisterPage;
