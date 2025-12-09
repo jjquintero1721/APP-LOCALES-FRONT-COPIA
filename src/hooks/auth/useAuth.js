@@ -1,16 +1,19 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import authService from '../../services/auth/authService';
 import useAuthStore from '../../store/authStore';
 
 export const useAuth = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { user, isAuthenticated, setUser, clearUser } = useAuthStore();
 
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: (credentials) => authService.login(credentials),
     onSuccess: (data) => {
+      queryClient.clear();
       setUser(data.user);
       navigate('/');
     },
@@ -53,6 +56,7 @@ export const useAuth = () => {
   };
 
   const logout = () => {
+    queryClient.clear();
     clearUser();
     navigate('/login');
   };
