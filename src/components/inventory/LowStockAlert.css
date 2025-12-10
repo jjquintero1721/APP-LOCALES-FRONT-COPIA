@@ -1,0 +1,174 @@
+/* Low Stock Alert */
+.low-stock-alert {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  animation: slideDown 0.6s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: rgba(245, 158, 11, 0.05);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.alert-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(245, 158, 11, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fbbf24;
+  flex-shrink: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.alert-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.alert-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.alert-title strong {
+  color: #fbbf24;
+  font-size: 0.938rem;
+  font-weight: 600;
+}
+
+.alert-count {
+  color: #94a3b8;
+  font-size: 0.813rem;
+}
+
+.alert-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.alert-item:last-child {
+  border-bottom: none;
+}
+
+.alert-item:hover {
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.alert-item-info {
+  flex: 1;
+}
+
+.alert-item-name {
+  color: #f1f5f9;
+  font-weight: 500;
+  font-size: 0.938rem;
+  margin-bottom: 0.375rem;
+}
+
+.alert-item-details {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.813rem;
+  color: #94a3b8;
+}
+
+.stock-info strong,
+.min-stock-info strong {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.alert-item-action {
+  color: #fbbf24;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+
+.alert-item:hover .alert-item-action {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+.alert-item-action svg {
+  width: 20px;
+  height: 20px;
+}
+
+.alert-footer {
+  padding: 0.875rem 1.25rem;
+  background: rgba(245, 158, 11, 0.05);
+  border-top: 1px solid rgba(245, 158, 11, 0.2);
+  text-align: center;
+}
+
+.more-items {
+  color: #94a3b8;
+  font-size: 0.813rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .alert-header,
+  .alert-item,
+  .alert-footer {
+    padding: 0.875rem 1rem;
+  }
+
+  .alert-item-details {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .alert-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .alert-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+}

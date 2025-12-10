@@ -1,0 +1,359 @@
+/* Container */
+.inventory-table-container {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container p {
+  color: #94a3b8;
+  font-size: 0.938rem;
+}
+
+/* Error State */
+.error-container {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.error-detail {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+/* Table */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inventory-table thead {
+  background: rgba(15, 23, 42, 0.8);
+  border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+}
+
+.inventory-table th {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-weight: 600;
+  color: #f1f5f9;
+  font-size: 0.813rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.inventory-table tbody .table-row {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  transition: all 0.2s ease;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.inventory-table tbody .table-row:hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.inventory-table tbody .table-row.inactive td {
+  opacity: 0.6;
+}
+
+.inventory-table tbody .table-row.low-stock {
+  background: rgba(245, 158, 11, 0.03);
+  border-left: 3px solid #fbbf24;
+}
+
+.inventory-table td {
+  padding: 1rem 1.25rem;
+  color: #cbd5e0;
+  font-size: 0.875rem;
+}
+
+/* Item Name Cell */
+.item-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.item-name-cell strong {
+  color: #f1f5f9;
+}
+
+.low-stock-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: #fbbf24;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.low-stock-badge svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Stock Cell */
+.stock-cell strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+/* Min/Max Cell */
+.min-max-cell {
+  color: #94a3b8;
+  font-size: 0.813rem;
+}
+
+/* Status Badge */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status.active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status.inactive {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.action-btn {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.action-btn.view {
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.action-btn.view:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.action-btn.edit {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+.action-btn.edit:hover:not(:disabled) {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.action-btn.adjust {
+  color: #a78bfa;
+  border-color: rgba(167, 139, 250, 0.2);
+}
+
+.action-btn.adjust:hover:not(:disabled) {
+  background: rgba(167, 139, 250, 0.2);
+  border-color: rgba(167, 139, 250, 0.4);
+}
+
+.action-btn.history {
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+.action-btn.history:hover:not(:disabled) {
+  background: rgba(148, 163, 184, 0.2);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+.action-btn.activate {
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.action-btn.activate:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.action-btn.deactivate {
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.action-btn.deactivate:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Empty State */
+.empty-state {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.empty-state svg {
+  width: 64px;
+  height: 64px;
+  color: #475569;
+  margin: 0 auto 1.5rem;
+}
+
+.empty-state h3 {
+  font-size: 1.125rem;
+  color: #cbd5e0;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: #94a3b8;
+  font-size: 0.938rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .inventory-table th,
+  .inventory-table td {
+    padding: 0.875rem 1rem;
+    font-size: 0.813rem;
+  }
+
+  .action-btn {
+    padding: 0.375rem;
+  }
+
+  .action-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .inventory-table {
+    min-width: 1000px;
+  }
+
+  .inventory-table th,
+  .inventory-table td {
+    padding: 0.75rem 0.875rem;
+  }
+
+  .actions {
+    flex-wrap: nowrap;
+  }
+}
